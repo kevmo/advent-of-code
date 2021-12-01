@@ -11,6 +11,19 @@
 
 import { readFileSync } from 'fs';
 
-const data = readFileSync('depths.dat');
+const depths = readFileSync('depths.dat').toString().split("\n").map((x) => {return parseInt(x)});
 
-console.log(data)
+let increases = 0;
+let previous_depth = depths.shift(0);
+
+function noop() {};
+
+
+function test_depth(x, y, counter) {
+  y > x ? increases++ : noop();
+  previous_depth = y
+}
+
+depths.forEach((x) => test_depth(previous_depth, x, increases))
+
+console.log(increases);
